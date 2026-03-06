@@ -1,0 +1,16 @@
+model Chat {
+  id        Int       @id @default(autoincrement())
+  clientId  Int
+  client    Client    @relation(fields: [clientId], references: [id])
+  driverId  Int
+  driver    Driver    @relation(fields: [driverId], references: [id])
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  deletedAt DateTime?
+  status    Int       @default(1) // 1: activo, 2: archivado, 3: bloqueado, etc.
+  messages  Message[]
+  
+  @@index([clientId])
+  @@index([driverId])
+  @@index([status])
+}
