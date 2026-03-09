@@ -5,12 +5,13 @@ import { AppService } from './app.service';
 import { MessageModule } from './app/modules/message/message.module';
 import { TravelModule } from './app/modules/travel/travel.module';
 import { PrismaModule } from './app/prisma/prisma/prisma.module';
+import { ChatModule } from './app/modules/chat/chat.module';
 
 @Module({
   imports: [
     PrismaModule,
     TravelModule, 
-    MessageModule],
+    MessageModule, ChatModule],
   controllers: [AppController],
   providers: [AppService],
 })
