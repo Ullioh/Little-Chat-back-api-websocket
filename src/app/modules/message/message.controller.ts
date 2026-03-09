@@ -1,21 +1,22 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, Query } from '@nestjs/common';
 import { MessageService } from './message.service';
 import {message} from 'src/app/models/message.model';
 import { PaginationModel } from 'src/app/models/pagination.model';
-import { ResponseModel, ResponsePaginationModel } from 'src/app/models/response.model';
+import { ApiTags } from '@nestjs/swagger';
 
-@Controller('message')
+@Controller('v1/messages')
+@ApiTags('v1/messages')
 export class MessageController {
   constructor(private readonly messageService: MessageService) {}
 
-  @Post()
-  create(@Body() createMessageDto: message) {
-    return this.messageService.create(createMessageDto);
+  @Post('create')
+  create(@Body() create: message) {
+    return this.messageService.create(create);
   }
 
-  @Get()
-  findAll() {
-    return this.messageService.findAll();
+  @Get('get')
+  findAll(@Query() pagination: PaginationModel) {
+    return this.messageService.findAll(pagination);
   }
 
   @Get(':id')

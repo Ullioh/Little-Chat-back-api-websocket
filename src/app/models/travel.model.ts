@@ -1,7 +1,7 @@
 import { ApiProperty } from "@nestjs/swagger";
 import { IsNumber, IsString, Length } from "class-validator";
 
-export class chat {
+export class travel{
 
     @ApiProperty({
         example: 1,

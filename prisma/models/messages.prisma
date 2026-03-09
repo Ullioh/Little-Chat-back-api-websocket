@@ -1,0 +1,13 @@
+model Messages {
+  id                                                       Int        @id @default(autoincrement())
+  message                                                  String     @db.Text // para mensajes largos
+  travelId                                                 Int
+  travel                                                   Travels   @relation(fields: [travelId], references: [id])
+  senderId   Int      // ID de quien envía el mensaje user
+  sender                                                   Users     @relation(fields: [senderId], references: [id])
+  readAt     DateTime? // para saber si ya fue leído
+  createdAt                                                DateTime   @default(now())
+  updatedAt                                                DateTime   @updatedAt
+  deletedAt                                                DateTime?
+  status                                                   Int        @default(1) // 1: enviado, 2: entregado, 3: leído, etc
+}

@@ -14,23 +14,48 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 model Clients {
-    id          Int      @default(autoincrement()) @id
-    userId      Int
-    user      Users     @relation(fields: [userId], references: [id])
-    clientName  String
-    createdAt   DateTime @default(now())
-    updatedAt   DateTime @updatedAt
-    deletedAt   DateTime?
-    status      Int      @default(1)
+  id         Int        @default(autoincrement()) @id
+  userId     Int
+  user       Users     @relation(fields: [userId], references: [id])
+  clientName String
+  createdAt  DateTime   @default(now())
+  updatedAt  DateTime   @updatedAt
+  deletedAt  DateTime?
+  status     Int        @default(1)
+  travels    Travels[]
 }model Drivers {
-    id          Int      @default(autoincrement()) @id
-    userId      Int
-    user      Users     @relation(fields: [userId], references: [id])
-    driverName  String
-    createdAt   DateTime @default(now())
-    updatedAt   DateTime @updatedAt
-    deletedAt   DateTime?
-    status      Int      @default(1)
+  id         Int        @default(autoincrement()) @id
+  userId     Int
+  user       Users     @relation(fields: [userId], references: [id])
+  driverName String
+  createdAt  DateTime   @default(now())
+  updatedAt  DateTime   @updatedAt
+  deletedAt  DateTime?
+  status     Int        @default(1)
+  travels    Travels[]
+}model Messages {
+  id                                                       Int        @id @default(autoincrement())
+  message                                                  String     @db.Text // para mensajes largos
+  travelId                                                 Int
+  travel                                                   Travels   @relation(fields: [travelId], references: [id])
+  senderId   Int      // ID de quien envía el mensaje user
+  sender                                                   Users     @relation(fields: [senderId], references: [id])
+  readAt     DateTime? // para saber si ya fue leído
+  createdAt                                                DateTime   @default(now())
+  updatedAt                                                DateTime   @updatedAt
+  deletedAt                                                DateTime?
+  status                                                   Int        @default(1) // 1: enviado, 2: entregado, 3: leído, etc
+}model Travels {
+  id        Int        @id @default(autoincrement())
+  clientId  Int
+  client    Clients   @relation(fields: [clientId], references: [id])
+  driverId  Int
+  driver    Drivers   @relation(fields: [driverId], references: [id])
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
+  deletedAt DateTime?
+  status    Int        @default(1) // 1: activo, 2: archivado, 3: bloqueado, etc.
+  messages  Messages[]
 }model Users {
     id          Int      @default(autoincrement()) @id
     code        String?  @unique
@@ -41,4 +66,5 @@ model Clients {
     status      Int      @default(1)
     drivers     Drivers[]
     clients     Clients[]
+    messages    Messages[]
 }

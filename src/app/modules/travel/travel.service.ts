@@ -1,31 +1,31 @@
 import { Injectable } from '@nestjs/common';
-import { PaginationModel } from 'src/app/models/pagination.model';
-import { ResponseModel, ResponsePaginationModel } from 'src/app/models/response.model';
-import {message} from 'src/app/models/message.model';
 import { PrismaService } from 'src/app/prisma/services/prisma.service';
+import {travel} from 'src/app/models/travel.model';
+import { ResponseModel, ResponsePaginationModel } from 'src/app/models/response.model';
+import { PaginationModel } from 'src/app/models/pagination.model';
+
 
 @Injectable()
-export class MessageService {
+export class TravelService {
 
   constructor(
     private prisma: PrismaService,
   ){}
 
-  async create(create: message) {
-  const message = await this.prisma.messages.create({
+  async create(create: travel) {
+    const travel = await this.prisma.travels.create({
       data: {
         ...create,
       },
     });
-    return new ResponseModel(message, 'message sent', 201);
+    return new ResponseModel(travel, 'travel created', 201);
   }
 
   async findAll(pagination:PaginationModel) {
    let where = {
-    content: { contains: pagination.search},
     status: 1
    };
-   const message = await this.prisma.messages.findMany({
+   const travel = await this.prisma.travels.findMany({
     skip: parseInt(pagination.page) * parseInt(pagination.limit),
     take: parseInt(pagination.limit),
     orderBy: {
@@ -33,10 +33,10 @@ export class MessageService {
     },
     where: where
    });
-   const totalCount = await this.prisma.messages.count({ where });
+   const totalCount = await this.prisma.travels.count({ where });
 
     let data: ResponsePaginationModel = {
-      rows: message,
+      rows: travel,
       totalCount: totalCount,
       page: parseInt(pagination.page),
       limit: parseInt(pagination.limit),
@@ -44,20 +44,19 @@ export class MessageService {
       sortOrder: pagination.sortOrder,
       search: pagination.search,
     }
-    return new ResponseModel(data, 'Messages found', 200);
+    return new ResponseModel(data, 'travels found', 200);
   }
 
-
-
+  
   findOne(id: number) {
-    return `This action returns a #${id} message`;
+    return `This action returns a #${id} travel`;
   }
 
-  update(id: number, update: message) {
-    return `This action updates a #${id} message`;
+  update(id: number, update: travel) {
+    return `This action updates a #${id} travel`;
   }
 
   remove(id: number) {
-    return `This action removes a #${id} message`;
+    return `This action removes a #${id} travel`;
   }
 }

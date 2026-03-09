@@ -9,7 +9,7 @@ export class message {
         required: true,
     })
     @IsNumber()
-    chatId: number;
+    travelId: number;
 
     @ApiProperty({
         example: 1,
@@ -20,19 +20,11 @@ export class message {
     senderId: number;
 
     @ApiProperty({
-        example: 'client',
-        description: 'Type of the sender (client or driver)',
-        required: true,
-    })
-    @IsString()
-    senderType: string;
-
-    @ApiProperty({
         example: 'Hello, I need help with my order.',
         description: 'Content of the message',
         required: true,
     })
     @IsString()
     @Length(1, 500)
-    content: string;
+    message: string;
 }
